@@ -7,26 +7,36 @@ const initialGameBoard=[
 ];
 
 
-export default function GameBoard(props){
-    const [gameBoard,setGameBoard]=React.useState(initialGameBoard);
+export default function GameBoard({onSelectCell,turn}){
+    // const [gameBoard,setGameBoard]=React.useState(initialGameBoard);
 
-    function handleCellClick(rowindex,columnindex){
-        if(gameBoard[rowindex][columnindex]===null){
-        setGameBoard((gameBoard)=>{
-            const newGameBoard=[...gameBoard.map((row)=>[...row])];
-            newGameBoard[rowindex][columnindex]=props.activePlayerSymbol;
-            return newGameBoard;
-        })
+    // function handleCellClick(rowindex,columnindex){
+    //     if(gameBoard[rowindex][columnindex]===null){
+    //     setGameBoard((gameBoard)=>{
+    //         const newGameBoard=[...gameBoard.map((row)=>[...row])];
+    //         newGameBoard[rowindex][columnindex]=props.activePlayerSymbol;
+    //         return newGameBoard;
+    //     })
 
-        props.onSelectCell();}
+    //     props.onSelectCell();}
+    // }
+
+    let gameBoard=initialGameBoard;
+
+    for(const x of turn ){
+        const {square,player}=x;
+        const {row,col}=square;
+        
+        gameBoard[row][col]=player;
     }
+
 
     return(
         <ol id="game-board">
             {gameBoard.map((row,rowIndex)=><li id={rowIndex}>
                 <ol>
                     {row.map((playerSymbol,columnIndex)=><li id={columnIndex}>
-                        <button onClick={()=>handleCellClick(rowIndex,columnIndex)}>{playerSymbol}</button>
+                        <button onClick={()=>onSelectCell(rowIndex,columnIndex)}>{playerSymbol}</button>
                     </li>)}
                 </ol>
             </li>)}
