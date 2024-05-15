@@ -3,17 +3,25 @@ import GameBoard from "./components/GameBoard"
 import React from "react"
 import Log from "./components/Log";
 
+function getActivePlayer(gameTurn){
+  let tempActivePlayer='X';
+
+  if(gameTurn.length>0 && gameTurn[0].player==='X')
+    tempActivePlayer='O';
+
+  return tempActivePlayer;
+}
+
 function App() {
-  const [activePlayer,setActivePlayer]=React.useState('X');
+  // const [activePlayer,setActivePlayer]=React.useState('X');
   const [gameTurn, setGameTurn]=React.useState([]);
 
-  function handleSelectCell(rowIndex,columnIndex){
-    setActivePlayer((currActivePlayer)=>{return currActivePlayer==='X' ? 'O' : 'X'});
-    setGameTurn((prevGameTurn)=>{
-      let tempActivePlayer='X';
+  const activePlayer=getActivePlayer(gameTurn);
 
-      if(prevGameTurn.length>0 && prevGameTurn[0].player==='X')
-        tempActivePlayer='O';
+  function handleSelectCell(rowIndex,columnIndex){
+    // setActivePlayer((currActivePlayer)=>{return currActivePlayer==='X' ? 'O' : 'X'});
+    setGameTurn((prevGameTurn)=>{
+      let tempActivePlayer=getActivePlayer(prevGameTurn);
 
       const tempGameTurn=[
         {square:{row:rowIndex, col:columnIndex} , player:tempActivePlayer }
