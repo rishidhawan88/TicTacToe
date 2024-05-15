@@ -1,13 +1,13 @@
 import React from "react";
 
-const initialGameBoard=[
-    [null,null,null],
-    [null,null,null],
-    [null,null,null]
-];
+// const initialGameBoard=[
+//     [null,null,null],
+//     [null,null,null],
+//     [null,null,null]
+// ];
 
 
-export default function GameBoard({onSelectCell,turn}){
+export default function GameBoard({onSelectCell,board}){
     // const [gameBoard,setGameBoard]=React.useState(initialGameBoard);
 
     // function handleCellClick(rowindex,columnindex){
@@ -21,19 +21,19 @@ export default function GameBoard({onSelectCell,turn}){
     //     props.onSelectCell();}
     // }
 
-    let gameBoard=initialGameBoard;
+    // let gameBoard=initialGameBoard;
 
-    for(const x of turn ){
-        const {square,player}=x;
-        const {row,col}=square;
+    // for(const x of turn ){
+    //     const {square,player}=x;
+    //     const {row,col}=square;
         
-        gameBoard[row][col]=player;
-    }
+    //     gameBoard[row][col]=player;
+    // }
 
 
     return(
         <ol id="game-board">
-            {gameBoard.map((row,rowIndex)=><li id={rowIndex}>
+            {board.map((row,rowIndex)=><li id={rowIndex}>
                 <ol>
                     {row.map((playerSymbol,columnIndex)=><li id={columnIndex}>
                         <button onClick={()=>onSelectCell(rowIndex,columnIndex)} disabled={playerSymbol!==null?true:false}>{playerSymbol}</button>

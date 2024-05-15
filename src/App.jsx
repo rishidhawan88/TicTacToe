@@ -2,6 +2,13 @@ import Player from "./components/Player"
 import GameBoard from "./components/GameBoard"
 import React from "react"
 import Log from "./components/Log";
+import { WINNING_COMBINATIONS } from "./WINNING_COMBINATIONS";
+
+const initialGameBoard=[
+  [null,null,null],
+  [null,null,null],
+  [null,null,null]
+];
 
 function getActivePlayer(gameTurn){
   let tempActivePlayer='X';
@@ -15,8 +22,12 @@ function getActivePlayer(gameTurn){
 function App() {
   // const [activePlayer,setActivePlayer]=React.useState('X');
   const [gameTurn, setGameTurn]=React.useState([]);
-
+  // const [winner,setWinner]=React.useState(null);
   const activePlayer=getActivePlayer(gameTurn);
+
+  let gameBoard=initialGameBoard;
+  let winner=null;
+    
 
   function handleSelectCell(rowIndex,columnIndex){
     // setActivePlayer((currActivePlayer)=>{return currActivePlayer==='X' ? 'O' : 'X'});
@@ -26,9 +37,30 @@ function App() {
       const tempGameTurn=[
         {square:{row:rowIndex, col:columnIndex} , player:tempActivePlayer }
         , ...prevGameTurn];
-      console.log(gameTurn[0]);
+      // console.log(gameTurn[0]);
       return tempGameTurn;
     })
+  }
+
+  for(const x of gameTurn ){
+    const {square,player}=x;
+    const {row,col}=square;
+    
+    gameBoard[row][col]=player;
+  }
+
+  for(const combination of WINNING_COMBINATIONS){
+    
+    const cell1=gameBoard[combination[0].row][combination[0].column];
+    const cell2=gameBoard[combination[1].row][combination[1].column];
+    const cell3=gameBoard[combination[2].row][combination[2].column];
+
+    
+
+    if(cell1 && cell1===cell2 && cell2===cell3){
+      winner=cell1;
+      console.log(`we have a winner ${winner}`);
+    }
   }
 
   return (
@@ -38,11 +70,12 @@ function App() {
         <Player name="player 1" symbol='X' isActive={activePlayer==='X'}/>
         <Player name="player 2" symbol='O' isActive={activePlayer==='O'}/>
       </ol>
-      <GameBoard onSelectCell={handleSelectCell} turn={gameTurn}/>
+      {winner!==null && <p>Winner is {winner}</p>}
+      <GameBoard onSelectCell={handleSelectCell} board={gameBoard}/>
       </div>
       <Log turn={gameTurn}/>
     </main>
   )
 }
 
-export default App
+export default App;
