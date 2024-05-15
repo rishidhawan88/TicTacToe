@@ -1,0 +1,35 @@
+import React from "react";
+
+const initialGameBoard=[
+    [null,null,null],
+    [null,null,null],
+    [null,null,null]
+];
+
+
+export default function GameBoard(props){
+    const [gameBoard,setGameBoard]=React.useState(initialGameBoard);
+
+    function handleCellClick(rowindex,columnindex){
+        if(gameBoard[rowindex][columnindex]===null){
+        setGameBoard((gameBoard)=>{
+            const newGameBoard=[...gameBoard.map((row)=>[...row])];
+            newGameBoard[rowindex][columnindex]=props.activePlayerSymbol;
+            return newGameBoard;
+        })
+
+        props.onSelectCell();}
+    }
+
+    return(
+        <ol id="game-board">
+            {gameBoard.map((row,rowIndex)=><li id={rowIndex}>
+                <ol>
+                    {row.map((playerSymbol,columnIndex)=><li id={columnIndex}>
+                        <button onClick={()=>handleCellClick(rowIndex,columnIndex)}>{playerSymbol}</button>
+                    </li>)}
+                </ol>
+            </li>)}
+        </ol>
+    );
+}
