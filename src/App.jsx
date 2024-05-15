@@ -2,6 +2,7 @@ import Player from "./components/Player"
 import GameBoard from "./components/GameBoard"
 import React from "react"
 import Log from "./components/Log";
+import Result from "./components/Result";
 import { WINNING_COMBINATIONS } from "./WINNING_COMBINATIONS";
 
 const initialGameBoard=[
@@ -63,6 +64,8 @@ function App() {
     }
   }
 
+  const isDraw=(winner===null && gameTurn.length===9);
+
   return (
     <main>
       <div id="game-container">
@@ -70,7 +73,8 @@ function App() {
         <Player name="player 1" symbol='X' isActive={activePlayer==='X'}/>
         <Player name="player 2" symbol='O' isActive={activePlayer==='O'}/>
       </ol>
-      {winner!==null && <p>Winner is {winner}</p>}
+      {/* {(winner!==null || turnsPlayed===9) && <Result winner={winner}/>} */}
+      {(winner!==null || isDraw) && <Result winner={winner}/>}
       <GameBoard onSelectCell={handleSelectCell} board={gameBoard}/>
       </div>
       <Log turn={gameTurn}/>
