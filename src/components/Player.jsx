@@ -3,12 +3,18 @@ import React from "react";
 export default function Player(props){
     const [isEditing, setIsEditing]=React.useState(false);
     const [playerName, setPlayerName]=React.useState(props.name);
+    
     function handleEditButton(){
         setIsEditing((isEditing)=>!isEditing);
+
+        if(!isEditing){
+            props.nameChange(props.symbol,playerName);
+        }
     }
 
     function playerNameChange(event){
         setPlayerName(event.target.value);
+        
     }
     
 

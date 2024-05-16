@@ -1,4 +1,4 @@
-export default function Result({winner}){
+export default function Result({winner,onRematch}){
     return(
         <div id="game-over">
         <h2>GAME OVER</h2>
@@ -6,7 +6,7 @@ export default function Result({winner}){
         {winner===null && <p>Match Draw</p>}
 
         <p>
-        <button>Rematch</button>
+        <button onClick={onRematch}>Rematch</button>
         </p>
         
         </div>

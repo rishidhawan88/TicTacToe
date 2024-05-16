@@ -21,24 +21,25 @@ function getActivePlayer(gameTurn){
 }
 
 function App() {
-  // const [activePlayer,setActivePlayer]=React.useState('X');
   const [gameTurn, setGameTurn]=React.useState([]);
-  // const [winner,setWinner]=React.useState(null);
+  const [playerName,setPlayerName]=React.useState(
+    {X:'player1',
+     O:'player2'
+    }
+  );
   const activePlayer=getActivePlayer(gameTurn);
-
-  let gameBoard=initialGameBoard;
+  let gameBoard=[...initialGameBoard.map((x)=>[...x])];
   let winner=null;
     
 
   function handleSelectCell(rowIndex,columnIndex){
-    // setActivePlayer((currActivePlayer)=>{return currActivePlayer==='X' ? 'O' : 'X'});
     setGameTurn((prevGameTurn)=>{
       let tempActivePlayer=getActivePlayer(prevGameTurn);
 
       const tempGameTurn=[
         {square:{row:rowIndex, col:columnIndex} , player:tempActivePlayer }
         , ...prevGameTurn];
-      // console.log(gameTurn[0]);
+      
       return tempGameTurn;
     })
   }
@@ -59,22 +60,38 @@ function App() {
     
 
     if(cell1 && cell1===cell2 && cell2===cell3){
-      winner=cell1;
+      winner=playerName[cell1];
       console.log(`we have a winner ${winner}`);
     }
   }
 
   const isDraw=(winner===null && gameTurn.length===9);
 
+  function restartMatch(){
+    setGameTurn([]);
+  }
+
+  function handlePlayerNameChange(newPlayer,newPlayerName){
+      setPlayerName((player)=>{
+        return(
+          {...player,
+            [newPlayer]:newPlayerName
+          }
+        );
+      })
+  }
+
   return (
     <main>
       <div id="game-container">
       <ol id="players" className="highlight-player">
-        <Player name="player 1" symbol='X' isActive={activePlayer==='X'}/>
-        <Player name="player 2" symbol='O' isActive={activePlayer==='O'}/>
+        <Player name="player 1" symbol='X' isActive={activePlayer==='X'} 
+        nameChange={handlePlayerNameChange}/>
+        <Player name="player 2" symbol='O' isActive={activePlayer==='O'} 
+        nameChange={handlePlayerNameChange}/>
       </ol>
-      {/* {(winner!==null || turnsPlayed===9) && <Result winner={winner}/>} */}
-      {(winner!==null || isDraw) && <Result winner={winner}/>}
+      
+      {(winner!==null || isDraw) && <Result winner={winner} onRematch={restartMatch}/>}
       <GameBoard onSelectCell={handleSelectCell} board={gameBoard}/>
       </div>
       <Log turn={gameTurn}/>
